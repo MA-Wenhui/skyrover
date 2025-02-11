@@ -1,0 +1,312 @@
+<?xml version='1.0' encoding='ASCII'?>
+<sdf version='1.10'>
+  <world name='warehouse_my'>
+    <physics type="ode">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>
+    <plugin name="gz::sim::systems::Physics" filename="gz-sim-physics-system"/>
+    <plugin name="gz::sim::systems::UserCommands" filename="gz-sim-user-commands-system"/>
+    <plugin name="gz::sim::systems::SceneBroadcaster" filename="gz-sim-scene-broadcaster-system"/>
+    <plugin name="gz::sim::systems::Contact" filename="gz-sim-contact-system"/>
+    <plugin name="gz::sim::systems::Imu" filename="gz-sim-imu-system"/>
+    <plugin name="gz::sim::systems::AirPressure" filename="gz-sim-air-pressure-system"/>
+    <plugin name="gz::sim::systems::AirSpeed" filename="gz-sim-air-speed-system"/>
+    <plugin name="gz::sim::systems::ApplyLinkWrench" filename="gz-sim-apply-link-wrench-system"/>
+    <plugin name="gz::sim::systems::NavSat" filename="gz-sim-navsat-system"/>
+    <plugin name="gz::sim::systems::Sensors" filename="gz-sim-sensors-system">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <scene>
+      <ambient>1 1 1 1</ambient>
+      <background>0.300000012 0.699999988 0.899999976 1</background>
+      <shadows>false</shadows>
+      <grid>false</grid>
+    </scene>
+    <!-- <gravity>0 0 -9.8000000000000007</gravity> -->
+    <!-- <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>     -->
+    <!-- <atmosphere type='adiabatic'/> -->
+    <model name='ground_plane'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>1 1</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>0 0 0 0 0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Warehouse</uri>
+      <name>warehouse</name>
+      <pose>0 -0.029999999999999999 -0.089999999999999997 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf_big</uri>
+      <name>shelf_big_0</name>
+      <pose>-10.381899833679199 -12.592297554016113 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf_big</uri>
+      <name>shelf_big_1</name>
+      <pose>11.470000000000001 12 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf_big</uri>
+      <name>shelf_big_3</name>
+      <pose>4.0324602127075195 -12.065699577331543 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf_big</uri>
+      <name>shelf_big_4</name>
+      <pose>-2.4977712631225586 -12.237899780273438 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf_big</uri>
+      <name>shelf_big_5</name>
+      <pose>3.3999999999999999 11.699999999999999 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf_big</uri>
+      <name>shelf_big_7</name>
+      <pose>-2.7102599143981934 11.838895797729492 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf_big</uri>
+      <name>shelf_big_8</name>
+      <pose>-10.683476448059082 11.789999961853027 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
+      <name>shelf_3</name>
+      <pose>-3.3225462436676025 -0.029999999329447746 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
+      <name>shelf_5</name>
+      <pose>5.8399999999999999 0.02 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
+      <name>shelf_7</name>
+      <pose>13.634212493896484 -20.72450065612793 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
+      <name>shelf_8</name>
+      <pose>13.643502235412598 -18.503299713134766 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
+      <name>shelf_9</name>
+      <pose>13.638009071350098 -15.923600196838379 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/MovAi/models/shelf</uri>
+      <name>shelf_10</name>
+      <pose>13.643421173095703 -13.654600143432617 0 0 0 0</pose>
+    </include>
+    <!-- <include>
+      <uri>file://<urdf-string></uri>
+      <name>standard_dock</name>
+      <pose>0.157 0 0 0 0 -3.1415853071795867</pose>
+    </include>
+    <include>
+      <uri>file://<urdf-string></uri>
+      <name>turtlebot4</name>
+      <pose>7.9763932189424311 -18.193255922218828 -0.0044500359750779764 -1.0129631816295515e-08 -0.0044012338242833829 -1.9769600627372466</pose>
+    </include> -->
+
+    <include>
+      <uri>model://x500</uri>
+      <name>x500_0</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://x500</uri>
+      <name>x500_1</name>
+      <pose>1 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://x500</uri>
+      <name>x500_2</name>
+      <pose>2 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://x500</uri>
+      <name>x500_3</name>
+      <pose>3 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://x500</uri>
+      <name>x500_4</name>
+      <pose>0 1 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://x500</uri>
+      <name>x500_5</name>
+      <pose>0 2 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_0</name>
+      <pose>0 -28 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_1</name>
+      <pose>1 -28 0 0 0 0</pose>
+      <scale>1.5 1.5 1.5</scale>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_2</name>
+      <pose>2 -28 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_3</name>
+      <pose>3 -28 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_4</name>
+      <pose>0 -29 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_5</name>
+      <pose>1 -29 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_6</name>
+      <pose>2 -29 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_7</name>
+      <pose>3 -29 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_8</name>
+      <pose>0 -30 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_9</name>
+      <pose>1 -30 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_10</name>
+      <pose>2 -30 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_11</name>
+      <pose>3 -30 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_12</name>
+      <pose>0 -31 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_13</name>
+      <pose>1 -31 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_14</name>
+      <pose>2 -31 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://DeliveryRobot</uri>
+      <name>delivery_robot_15</name>
+      <pose>3 -31 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://aws_robomaker_warehouse_ClutteringC_01</uri>
+      <name>cluster_0</name>
+      <pose>14 -28 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://aws_robomaker_warehouse_ClutteringC_01</uri>
+      <name>cluster_1</name>
+      <pose>-16 -28 0 0 0 0</pose>
+    </include>
+
+    <light name='sun' type='directional'>
+      <pose>-5 -3 10 0 0 0</pose>
+      <cast_shadows>false</cast_shadows>
+      <intensity>1</intensity>
+      <direction>0 0 -1</direction>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>1 1 1 1</specular>
+      <attenuation>
+        <range>10</range>
+        <linear>1</linear>
+        <constant>1</constant>
+        <quadratic>0</quadratic>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>47.397971057728974</latitude_deg>
+      <longitude_deg> 8.546163739800146</longitude_deg>
+      <elevation>0</elevation>
+    </spherical_coordinates>
+  </world>
+</sdf>
