@@ -13,13 +13,23 @@ Environment Setup
 
 To get started with SkyRover, follow the instructions below to set up your environment.
 
+This project is developed on Ubuntu24.04LTS.
+
+
 
 Install ROS2
 -------------
 
 To install ROS2, please follow the official installation guide for your platform:
 
-- [ROS2 Installation Guide](https://docs.ros.org/en/foxy/Installation.html)
+- [ROS2 Installation Guide](https://docs.ros.org/en/jazzy/Installation.html)
+
+
+Install Gazebo (Harmonic)
+-------------
+
+XXX
+
 
 Install PX4 (Optional)
 -----------------------
@@ -39,7 +49,12 @@ XXX
 Train 3D DCC model (or just use pretrained data)
 -------------------------------
 
-XXX
+TODO
+.. code-block:: bash
+    XXX conda, ray , pytorch...
+    XXX
+    cd wrapper/dcc_3d/
+    python train_dcc_3d.py
 
 Cite Our Work
 -------------------------------
