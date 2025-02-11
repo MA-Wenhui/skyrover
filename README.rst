@@ -28,7 +28,7 @@ To install ROS2, please follow the official installation guide for your platform
 Install Gazebo (Harmonic)
 -------------
 
-XXX
+TODO
 
 
 Install PX4 (Optional)
@@ -44,7 +44,7 @@ Install Navigation2 (Optional)
 
 If you need advanced path planning and navigation capabilities, you can install Navigation2. To install Navigation2, follow the steps below:
 
-XXX
+TODO
 
 Train 3D DCC model (or just use pretrained data)
 -------------------------------
@@ -53,12 +53,26 @@ TODO
 
 .. code-block:: bash
 
-    XXX conda, ray , pytorch...
-    XXX
+    conda create -n skyrover python=3.12
+    conda actiavte skyrover
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+    pip install ray tensorboard 
     cd wrapper/dcc_3d/
     python train_dcc_3d.py
+
+
+Run MAPF 3D
+-------------------------------
+
+TODO
+
+.. code-block:: bash
+
+    colcon build --symlink-install
+    ros2 run skyrover run_mapf3d.py --3dcbs
+
 
 Cite Our Work
 -------------------------------
 
-XXX
+TODO
