@@ -75,4 +75,12 @@ TODO
 Cite Our Work
 -------------------------------
 
-TODO
+@misc{ma2025skyrovermodularsimulatorcrossdomain,
+      title={SkyRover: A Modular Simulator for Cross-Domain Pathfinding}, 
+      author={Wenhui Ma and Wenhao Li and Bo Jin and Changhong Lu and Xiangfeng Wang},
+      year={2025},
+      eprint={2502.08969},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2502.08969}, 
+}
