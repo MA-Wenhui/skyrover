@@ -16,11 +16,21 @@ To get started with SkyRover, follow the instructions below to set up your envir
 This project is developed on Ubuntu24.04LTS.
 
 
+Get the code
+-------------
+
+.. code-block:: bash
+
+    mkdir -p ~/ros2_ws/src
+    cd ~/ros2_ws/src
+    git clone https://github.com/MA-Wenhui/skyrover.git
+
+
 
 Install ROS2
 -------------
 
-To install ROS2, please follow the official installation guide for your platform:
+To install ROS2, please follow the official installation guide:
 
 - [ROS2 Installation Guide](https://docs.ros.org/en/jazzy/Installation.html)
 
@@ -28,7 +38,10 @@ To install ROS2, please follow the official installation guide for your platform
 Install Gazebo (Harmonic)
 -------------
 
-TODO
+
+Please follow the official installation guide:
+
+- [Gazebo Harmonic Installation](https://gazebosim.org/docs/harmonic/install_ubuntu/)
 
 
 Install PX4 (Optional)
@@ -39,17 +52,18 @@ PX4 is an optional component for SkyRover, primarily for aerial simulations. If 
 1. Download PX4 from [PX4 official site](https://px4.io/).
 2. Follow the installation steps specific to your system.
 
+
 Install Navigation2 (Optional)
 -------------------------------
 
-If you need advanced path planning and navigation capabilities, you can install Navigation2. To install Navigation2, follow the steps below:
+Follow the installation steps to install Navigation2 Stack:
 
-TODO
+- [Navigation2 Doc](https://docs.nav2.org/development_guides/build_docs/index.html#install)
+
+
 
 Train 3D DCC model (or just use pretrained data)
 -------------------------------
-
-TODO
 
 .. code-block:: bash
 
@@ -57,6 +71,7 @@ TODO
     conda actiavte skyrover
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
     pip install ray tensorboard 
+    cd ~/ros2_ws/src/skyrover
     cd wrapper/dcc_3d/
     python train_dcc_3d.py
 
@@ -64,12 +79,13 @@ TODO
 Run MAPF 3D
 -------------------------------
 
-TODO
-
 .. code-block:: bash
-
+    
+    cd ~/ros2_ws/
     colcon build --symlink-install
-    ros2 run skyrover run_mapf3d.py --3dcbs
+    ros2 run skyrover run_mapf3d --ros-args -p alg:=3dcbs -p pcd:="/path/to/point_cloud/file.pcd"
+    ros2 run skyrover run_mapf3d --ros-args -p alg:=3dastar -p pcd:="/path/to/point_cloud/file.pcd"
+    ros2 run skyrover run_mapf3d --ros-args -p alg:=3ddcc -p model_path:="/path/to/dcc_model.pth" -p pcd:="/path/to/point_cloud/file.pcd"
 
 
 Cite Our Work

@@ -155,10 +155,19 @@ task_phrase_3 = [
 class Mapf3DPublisher(rosNode):
     def __init__(self):
         super().__init__('mapf_3d_publisher')
-        
+
+        self.declare_parameter('alg', '3dcbs')
+        self.algorithm_name = self.get_parameter('alg').get_parameter_value().string_value
+        self.get_logger().info(f"Selected algorithm: {self.algorithm_name}")
+        self.model_path = None
+        if self.algorithm_name == "3ddcc":
+            self.declare_parameter('model_path', "65000.pth")
+            self.model_path = self.get_parameter('model_path').get_parameter_value().string_value
+            self.get_logger().info(f"Using model path: {self.model_path}")
+
         # Declare parameter for PCD file path
-        self.declare_parameter('pcd_file', '/home/ubuntu/ros2_ws/src/mapf_3d_ros2/world/map/map.pcd')
-        self.pcd_file = self.get_parameter('pcd_file').get_parameter_value().string_value
+        self.declare_parameter('pcd', 'map.pcd')
+        self.pcd_file = self.get_parameter('pcd').get_parameter_value().string_value
         
         # Publisher for PointCloud2
         self.pc_publisher_ = self.create_publisher(PointCloud2, 'mapf_3d_pc', 10)
@@ -189,6 +198,7 @@ class Mapf3DPublisher(rosNode):
         self.filename = f"positions_{timestamp}.csv"
         self.first_write = True
 
+
     def reset_planner(self,tasks):
         for item in tasks:
             item["start"] = self.world2planner(item["start"])
@@ -197,15 +207,16 @@ class Mapf3DPublisher(rosNode):
             p = self.planner2world(it["start"])
             set_entity_pose(it["name"],p[0],p[1],p[2])
 
-        
-        self.network_path = "/home/ubuntu/ros2_ws/src/mapf-3d/mapf3d/src/dcc_3d/data/65000.pth"
-        # self.planner = AStarAlgorithmWrapper(all_sim_agents,grid.shape,
-        #                                      [self.world2planner((p[0],p[1],p[2])) for p in self.obstacles])
-        self.planner = CBSAlgorithmWrapper(tasks,self.grid.shape,
-                                             [self.world2planner((p[0],p[1],p[2])) for p in self.obstacles])
-        # self.planner = DCCAlgorithmWrapper(all_sim_agents,grid.shape,
-        #                                      [self.world2planner((p[0],p[1],p[2])) for p in self.obstacles])
-        # self.planner.init(self.network_path)
+        if self.algorithm_name == "3dastar":
+            self.planner = AStarAlgorithmWrapper(tasks,self.grid.shape,
+                                                 [self.world2planner((p[0],p[1],p[2])) for p in self.obstacles])
+        elif self.algorithm_name == "3dcbs":
+            self.planner = CBSAlgorithmWrapper(tasks,self.grid.shape,
+                                                [self.world2planner((p[0],p[1],p[2])) for p in self.obstacles])
+        elif self.algorithm_name == "3ddcc":
+            self.planner = DCCAlgorithmWrapper(tasks,self.grid.shape,
+                                                [self.world2planner((p[0],p[1],p[2])) for p in self.obstacles])
+            self.planner.init(self.model_path)
         print(f"planner init done")
 
 
