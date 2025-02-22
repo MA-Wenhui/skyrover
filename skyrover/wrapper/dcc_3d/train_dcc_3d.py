@@ -6,10 +6,10 @@ import numpy as np
 import ray
 import torch
 
-import config as config
-from actor import Actor
-from global_buffer import GlobalBuffer
-from learner import Learner
+from . import config as config
+from .actor import Actor
+from .global_buffer import GlobalBuffer
+from .learner import Learner
 
 
 os.environ["OMP_NUM_THREADS"] = "1"

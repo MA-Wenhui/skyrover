@@ -71,9 +71,8 @@ Train 3D DCC model (or just use pretrained data)
     conda actiavte skyrover
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
     pip install ray tensorboard matplotlib
-    cd ~/ros2_ws/src/skyrover
-    cd skyrover/wrapper/dcc_3d/
-    python train_dcc_3d.py
+    cd ~/ros2_ws/src/skyrover/skyrover/wrapper
+    python -m dcc_3d.train_dcc_3d
 
 
 Run MAPF 3D

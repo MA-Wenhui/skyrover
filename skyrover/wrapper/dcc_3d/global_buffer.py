@@ -1,4 +1,4 @@
-import config as config
+from . import config as config
 import numpy as np
 import ray
 import threading

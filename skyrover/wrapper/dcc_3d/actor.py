@@ -4,11 +4,11 @@ import torch
 import numpy as np
 import random
 import math
-from global_buffer import GlobalBuffer,EpisodeData
-from learner import Learner
-from model import Network
-from environment3d import Environment3D
-import config as config
+from .global_buffer import GlobalBuffer,EpisodeData
+from .learner import Learner
+from .model import Network
+from .environment3d import Environment3D
+from . import config as config
 
 class LocalBuffer:
     __slots__ = (

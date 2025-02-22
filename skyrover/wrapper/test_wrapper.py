@@ -1,6 +1,6 @@
-from simulator.astar_3d_wrapper import AStarAlgorithmWrapper
-from simulator.cbs_3d_wrapper import CBSAlgorithmWrapper
-from simulator.dcc_3d_wrapper import DCCAlgorithmWrapper
+from astar_3d_wrapper import AStarAlgorithmWrapper
+from cbs_3d_wrapper import CBSAlgorithmWrapper
+from dcc_3d_wrapper import DCCAlgorithmWrapper
 
 # 定义3D空间维度
 dimension = (5, 5, 5)
