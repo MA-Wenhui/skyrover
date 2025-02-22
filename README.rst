@@ -80,12 +80,22 @@ Run MAPF 3D
 
 .. code-block:: bash
     
+    # build the skyrover package
     cd ~/ros2_ws/
     colcon build --symlink-install
     source ~/ros2_ws/install/setup.bash
+
+    # open the gz sim, it may takes a while for the first time
+    GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/skyrover/skyrover/world/models/:$GZ_SIM_RESOURCE_PATH gz sim ~/ros2_ws/src/skyrover/skyrover/world/warehouse.sdf
+
+    # choose an alg to run
     ros2 run skyrover run_mapf3d --ros-args -p alg:=3dcbs -p pcd:=~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd 
     ros2 run skyrover run_mapf3d --ros-args -p alg:=3dastar -p pcd:=~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd 
     ros2 run skyrover run_mapf3d --ros-args -p alg:=3ddcc -p model_path:=~/ros2_ws/src/skyrover/skyrover/wrapper/dcc_3d/data/65000.pth -p pcd:=~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd
+
+    # run rviz to visualize /mapf_3d_pc topic
+    rviz2
+
 
 Cite Our Work
 -------------------------------
