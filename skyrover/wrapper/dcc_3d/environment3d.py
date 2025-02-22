@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 from typing import List
-import config as config
+from . import config as config
 
 ACTION_LIST = np.array(
     [

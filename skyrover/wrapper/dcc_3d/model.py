@@ -2,7 +2,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import config as config
+from . import config as config
 
 
 class CommLayer(nn.Module):
