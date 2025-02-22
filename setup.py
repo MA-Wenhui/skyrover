@@ -14,12 +14,13 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='ubuntu',
-    maintainer_email='1390182382@163.com',
+    maintainer_email='mawenhuish@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'run_mapf3d = skyrover.run_mapf3d:main',
         ],
     },
 )

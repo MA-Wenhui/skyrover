@@ -1,6 +1,6 @@
 from .algo_wrapper import AlgorithmWrapperBase
-from ..src.dcc_3d.environment3d import Environment3D
-from ..src.dcc_3d.model import Network
+from .dcc_3d.environment3d import Environment3D
+from .dcc_3d.model import Network
 
 import numpy as np
 import torch

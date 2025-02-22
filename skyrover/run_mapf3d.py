@@ -1,9 +1,9 @@
-""" only find this way, ros2 can run with pytorch 
-#!/home/ubuntu/miniconda3/envs/skyrover/bin/python
+#!/home/msh/miniconda3/envs/skyrover/bin/python
 import sys
-sys.path.append('/home/ubuntu/miniconda3/envs/skyrover/lib/python3.12/site-packages')
+import os
+sys.path.append(os.path.expanduser('~/miniconda3/envs/skyrover/lib/python3.12/site-packages'))
 print(sys.executable)
-"""
+
 import rclpy
 from rclpy.node import Node as rosNode
 from sensor_msgs.msg import PointCloud2
@@ -11,10 +11,10 @@ from std_msgs.msg import Header
 import sensor_msgs_py.point_cloud2 as pc2
 import numpy as np
 import os
-from mapf3d.pcd2grid import load_pcd,generate_3d_grid
-from mapf3d.simulator.dcc_3d_wrapper import DCCAlgorithmWrapper
-from mapf3d.simulator.cbs_3d_wrapper import CBSAlgorithmWrapper
-from mapf3d.simulator.astar_3d_wrapper import AStarAlgorithmWrapper
+from skyrover.pcd2grid import load_pcd,generate_3d_grid
+from skyrover.wrapper.dcc_3d_wrapper import DCCAlgorithmWrapper
+from skyrover.wrapper.cbs_3d_wrapper import CBSAlgorithmWrapper
+from skyrover.wrapper.astar_3d_wrapper import AStarAlgorithmWrapper
 
 import time
 import math
@@ -152,23 +152,33 @@ task_phrase_3 = [
     {"name": "delivery_robot_15", "start": (-12, -30, 0), "goal": (-6,-17,0)},
 ]
 
-class Mapf3DPublisher(rosNode):
+class Mapf3DExecutor(rosNode):
     def __init__(self):
         super().__init__('mapf_3d_publisher')
 
+        # Declare algorithm parameter
         self.declare_parameter('alg', '3dcbs')
         self.algorithm_name = self.get_parameter('alg').get_parameter_value().string_value
         self.get_logger().info(f"Selected algorithm: {self.algorithm_name}")
+
+        # Model path handling for 3ddcc
         self.model_path = None
         if self.algorithm_name == "3ddcc":
             self.declare_parameter('model_path', "65000.pth")
             self.model_path = self.get_parameter('model_path').get_parameter_value().string_value
+            # Convert model path to absolute path
+            self.model_path = os.path.expanduser(self.model_path)  # Expands ~ to home directory if used
+            self.model_path = os.path.abspath(self.model_path)      # Converts to absolute path
             self.get_logger().info(f"Using model path: {self.model_path}")
 
         # Declare parameter for PCD file path
         self.declare_parameter('pcd', 'map.pcd')
         self.pcd_file = self.get_parameter('pcd').get_parameter_value().string_value
-        
+        # Convert PCD file path to absolute path
+        self.pcd_file = os.path.expanduser(self.pcd_file)  # Expands ~ to home directory if used
+        self.pcd_file = os.path.abspath(self.pcd_file)      # Converts to absolute path
+        self.get_logger().info(f"Using pcd path: {self.pcd_file}")
+                               
         # Publisher for PointCloud2
         self.pc_publisher_ = self.create_publisher(PointCloud2, 'mapf_3d_pc', 10)
         self.grid_publisher_ = self.create_publisher(PointCloud2, 'mapf_3d_grid', 10)
@@ -271,7 +281,7 @@ class Mapf3DPublisher(rosNode):
 
 def test_mapf(args=None):
     rclpy.init(args=args)
-    node = Mapf3DPublisher()
+    node = Mapf3DExecutor()
 
     rclpy.spin(node)
     
@@ -286,5 +296,3 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
-
-# ros2 run mapf3d_ros test_node --ros-args -p  pcd_file:=/home/mawenhui/ros2_ws/src/mapf_3d_ros2/world/map/map.pcd

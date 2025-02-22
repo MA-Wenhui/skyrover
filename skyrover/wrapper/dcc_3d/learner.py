@@ -5,9 +5,9 @@ from torch.optim import Adam
 from torch.optim.lr_scheduler import MultiStepLR
 import torch.nn as nn
 import torch.nn.functional as F
-from src.dcc_3d.model import Network
-from src.dcc_3d.global_buffer import GlobalBuffer
-import src.dcc_3d.config as config
+from model import Network
+from global_buffer import GlobalBuffer
+import config as config
 
 import subprocess
 import os

@@ -8,7 +8,7 @@ action_dim = 7
 render = "human"
 # render = "rgb_array"
 
-load_model="data//78000.pth"
+load_model=""
 # Optimizer
 lr = 2e-4
 lr_scheduler_milestones = [40000, 80000]

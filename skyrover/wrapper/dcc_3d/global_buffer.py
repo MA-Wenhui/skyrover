@@ -1,4 +1,4 @@
-import src.dcc_3d.config as config
+import config as config
 import numpy as np
 import ray
 import threading

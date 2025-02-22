@@ -1,5 +1,5 @@
 from .algo_wrapper import AlgorithmWrapperBase
-from ..src.astar_3d import a_star_3d
+from .astar_3d import a_star_3d
 import numpy as np
 import random
 

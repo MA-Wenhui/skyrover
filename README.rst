@@ -70,9 +70,9 @@ Train 3D DCC model (or just use pretrained data)
     conda create -n skyrover python=3.12
     conda actiavte skyrover
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-    pip install ray tensorboard 
+    pip install ray tensorboard matplotlib
     cd ~/ros2_ws/src/skyrover
-    cd wrapper/dcc_3d/
+    cd skyrover/wrapper/dcc_3d/
     python train_dcc_3d.py
 
 
@@ -83,10 +83,10 @@ Run MAPF 3D
     
     cd ~/ros2_ws/
     colcon build --symlink-install
-    ros2 run skyrover run_mapf3d --ros-args -p alg:=3dcbs -p pcd:="/path/to/point_cloud/file.pcd"
-    ros2 run skyrover run_mapf3d --ros-args -p alg:=3dastar -p pcd:="/path/to/point_cloud/file.pcd"
-    ros2 run skyrover run_mapf3d --ros-args -p alg:=3ddcc -p model_path:="/path/to/dcc_model.pth" -p pcd:="/path/to/point_cloud/file.pcd"
-
+    source ~/ros2_ws/install/setup.bash
+    ros2 run skyrover run_mapf3d --ros-args -p alg:=3dcbs -p pcd:=~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd 
+    ros2 run skyrover run_mapf3d --ros-args -p alg:=3dastar -p pcd:=~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd 
+    ros2 run skyrover run_mapf3d --ros-args -p alg:=3ddcc -p model_path:=~/ros2_ws/src/skyrover/skyrover/wrapper/dcc_3d/data/65000.pth -p pcd:=~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd
 
 Cite Our Work
 -------------------------------

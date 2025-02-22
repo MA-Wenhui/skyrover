@@ -1,5 +1,5 @@
 from .algo_wrapper import AlgorithmWrapperBase
-from ..src.cbs_3d import CBS_3D,Environment
+from .cbs_3d import CBS_3D,Environment
 
 class CBSAlgorithmWrapper(AlgorithmWrapperBase):
     def __init__(self, agents, space_dim, obstacles):
