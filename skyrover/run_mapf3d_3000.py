@@ -26,13 +26,115 @@ from gz.msgs10.quaternion_pb2 import Quaternion
 from gz.transport13 import Node as gzNode 
 from datetime import datetime
 
-import random
-
 def set_entity_pose(entity, x, y, z, orientation_w=1.0):
-    return
+    """
+    Set the entity pose by calling the Gazebo service.
+
+    Parameters:
+    - entity: The name of the entity (e.g., x500_0, delivery_robot_0).
+    - x, y, z: The position coordinates.
+    - orientation_w: The w component of the quaternion orientation (default is 1.0).
+    """
+    node = gzNode()
+    service_name = "/world/warehouse/set_pose"
+    request = Pose()
+    request.name = entity
+    request.position.x = x
+    request.position.y = y
+    request.position.z = z
+    request.orientation.x = 0.0
+    request.orientation.y = 0.0
+    request.orientation.z = 0.0
+    request.orientation.w = orientation_w
+    response = Boolean()
+    timeout = 200  # Timeout in milliseconds
+
+    result, response = node.request(service_name, request, Pose, Boolean, timeout)
+    # print(f"Set {entity} position to ({x}, {y}, {z}), Result:", result, "\nResponse:", response.data)
+
+init_pose = [
+    {"name": "x500_0", "start": (7, -28, 3), "goal": (7, -28, 3)},
+    {"name": "x500_1", "start": (11, -27, 3), "goal": (11, -27, 3)},
+    {"name": "x500_2", "start": (11, -30, 3), "goal": (11, -30, 3)},
+    {"name": "x500_3", "start": (-13, -27, 3), "goal": (-13, -27, 3)},
+    {"name": "x500_4", "start": (-13, -30, 3), "goal": (-13, -30, 3)},
+    {"name": "x500_5", "start":  (-9, -30, 3), "goal": (-9, -30, 3)},
+    {"name": "delivery_robot_0", "start": (9, 0, 0), "goal": (9, 0, 0)},
+    {"name": "delivery_robot_1", "start": (9, -1, 0), "goal": (9, -1, 0)},
+    {"name": "delivery_robot_2", "start": (9, -2, 0), "goal": (9, -2, 0)},
+    {"name": "delivery_robot_3", "start": (9, -3, 0), "goal": (9, -3, 0)},
+    {"name": "delivery_robot_4", "start": (9, -4, 0), "goal": (9, -4, 0)},
+    {"name": "delivery_robot_5", "start": (9, -5, 0), "goal": (9, -5, 0)},
+    {"name": "delivery_robot_6", "start": (9, -6, 0), "goal": (9, -6, 0)},
+    {"name": "delivery_robot_7", "start": (9, -7, 0), "goal": (9, -7, 0)},
+    {"name": "delivery_robot_8", "start": (9, -8, 0), "goal": (9, -8, 0)},
+    {"name": "delivery_robot_9", "start": (9, -9, 0), "goal": (9, -9, 0)},
+    {"name": "delivery_robot_10", "start": (9, -10, 0), "goal":(9, -10, 0)},
+    {"name": "delivery_robot_11", "start": (9, -11, 0), "goal": (9, -11, 0)},
+    {"name": "delivery_robot_12", "start": (9, -12, 0), "goal": (9, -12, 0)},
+    {"name": "delivery_robot_13", "start": (9, -13, 0), "goal": (9, -13, 0)},
+    {"name": "delivery_robot_14", "start": (9, -14, 0), "goal": (9, -14, 0)},
+    {"name": "delivery_robot_15", "start": (9, -15, 0), "goal": (9, -15, 0)},
+]
+
+task_phrase_1 = [
+    {"name": "a1", "start": (11, 0, 3), "goal": (7, -28, 3)},
+    {"name": "a2", "start": (11, -1, 3), "goal": (11, -27, 3)},
+    {"name": "a3", "start": (11, -2, 3), "goal": (11, -30, 3)}
+]
+
+task_phrase_2 = [
+    {"name": "x500_0", "start": (7, -28, 3), "goal": (7, -28, 3)},
+    {"name": "x500_1", "start": (11, -27, 3), "goal": (11, -27, 3)},
+    {"name": "x500_2", "start": (11, -30, 3), "goal": (11, -30, 3)},
+    {"name": "x500_3", "start": (-13, -27, 3), "goal": (-13, -27, 3)},
+    {"name": "x500_4", "start": (-13, -30, 3), "goal": (-13, -30, 3)},
+    {"name": "x500_5", "start":  (-9, -30, 3), "goal": (-9, -30, 3)},
+    {"name": "delivery_robot_0", "start": (9, 0, 0), "goal": (7, -27, 0)},
+    {"name": "delivery_robot_1", "start": (9, -1, 0), "goal": (8, -27, 0)},
+    {"name": "delivery_robot_2", "start": (9, -2, 0), "goal": (9, -27, 0)},
+    {"name": "delivery_robot_3", "start": (9, -3, 0), "goal": (10, -27, 0)},
+    {"name": "delivery_robot_4", "start": (9, -4, 0), "goal": (7, -30, 0)},
+    {"name": "delivery_robot_5", "start": (9, -5, 0), "goal": (8, -30, 0)},
+    {"name": "delivery_robot_6", "start": (9, -6, 0), "goal": (9, -30, 0)},
+    {"name": "delivery_robot_7", "start": (9, -7, 0), "goal": (10, -30, 0)},
+    {"name": "delivery_robot_8", "start": (9, -8, 0), "goal": (-9, -27, 0)},
+    {"name": "delivery_robot_9", "start": (9, -9, 0), "goal": (-10, -27, 0)},
+    {"name": "delivery_robot_10", "start": (9, -10, 0), "goal": (-11, -27, 0)},
+    {"name": "delivery_robot_11", "start": (9, -11, 0), "goal": (-12, -27, 0)},
+    {"name": "delivery_robot_12", "start": (9, -12, 0), "goal": (-9, -30, 0)},
+    {"name": "delivery_robot_13", "start": (9, -13, 0), "goal": (-10, -30, 0)},
+    {"name": "delivery_robot_14", "start": (9, -14, 0), "goal": (-11, -30, 0)},
+    {"name": "delivery_robot_15", "start": (9, -15, 0), "goal": (-12, -30, 0)},
+]
+
+task_phrase_3 = [
+    {"name": "x500_0", "start": (7, -28, 3), "goal": (0, 5, 3)},
+    {"name": "x500_1", "start": (11, -27, 3), "goal": (0, 8, 3)},
+    {"name": "x500_2", "start": (11, -30, 3), "goal": (0, 11, 3)},
+    {"name": "x500_3", "start": (-13, -27, 3), "goal": (0, -5, 3)},
+    {"name": "x500_4", "start": (-13, -30, 3), "goal": (0, -8, 3)},
+    {"name": "x500_5", "start":  (-9, -30, 3), "goal": (0, -11, 3)},
+    {"name": "delivery_robot_0", "start": (7, -27, 0), "goal": (0,5,0)},
+    {"name": "delivery_robot_1", "start": (8, -27, 0), "goal": (0,9,0)},
+    {"name": "delivery_robot_2", "start": (9, -27, 0), "goal": (0,13,0)},
+    {"name": "delivery_robot_3", "start": (10, -27, 0), "goal": (0,17,0)},
+    {"name": "delivery_robot_4", "start": (7, -30, 0), "goal": (0,-5,0)},
+    {"name": "delivery_robot_5", "start": (8, -30, 0), "goal": (0,-9,0)},
+    {"name": "delivery_robot_6", "start": (9, -30, 0), "goal": (0,-13,0)},
+    {"name": "delivery_robot_7", "start": (10, -30, 0), "goal": (0,-17,0)},
+    {"name": "delivery_robot_8", "start": (-9, -27, 0), "goal": (-6,5,0)},
+    {"name": "delivery_robot_9", "start": (-10, -27, 0), "goal": (-6,9,0)},
+    {"name": "delivery_robot_10", "start": (-11, -27, 0), "goal": (-6,13,0)},
+    {"name": "delivery_robot_11", "start": (-12, -27, 0), "goal": (-6,17,0)},
+    {"name": "delivery_robot_12", "start": (-9, -30, 0), "goal": (-6,-5,0)},
+    {"name": "delivery_robot_13", "start": (-10, -30, 0), "goal": (-6,-9,0)},
+    {"name": "delivery_robot_14", "start": (-11, -30, 0), "goal": (-6,-13,0)},
+    {"name": "delivery_robot_15", "start": (-12, -30, 0), "goal": (-6,-17,0)},
+]
 
 class Mapf3DExecutor(rosNode):
-    def __init__(self):
+    def __init__(self,tasks):
         super().__init__('mapf_3d_publisher')
 
         # Declare algorithm parameter
@@ -78,46 +180,10 @@ class Mapf3DExecutor(rosNode):
         self.grid = generate_3d_grid(self.points,np.array(self.min_bounds),np.array(self.max_bounds), 1.0)
         print(f"grid shape: {self.grid.shape}, self.min_bounds:{self.min_bounds}")
         self.obstacles = np.argwhere(self.grid == 1)*1.0+self.min_bounds
-
-        
-        # 找到所有空闲位置
-        free_positions = np.argwhere(self.grid == 0)  # 位置值为0表示空闲
-        free_positions = free_positions * 1.0 + self.min_bounds  # 转换为世界坐标系
-
-        # 将位置转换为元组，并且限制z坐标不超过8
-        free_positions = [tuple(pos) for pos in free_positions if pos[2] <= 8]
-
-        # 随机选择3000个起始位置
-        start_positions = random.sample(free_positions, 3000)
-
-        # 从剩余的空闲位置中选择3000个目标位置
-        # 排除已选择的起点，确保终点和起点不重复
-        remaining_positions = [pos for pos in free_positions if pos not in start_positions]
-        goal_positions = random.sample(remaining_positions, 3000)
-
-        # 创建任务列表，每个任务包含起始位置和目标位置
-        tasks = []
-        for i in range(3000):
-            task = {
-                "name": f"a{i+1}",
-                "start": start_positions[i],
-                "goal": goal_positions[i]
-            }
-            tasks.append(task)
-
-        # save tasks to file (你可以选择保存为JSON或其他格式)
-        with open("tasks.json", "w") as f:
-            import json
-            json.dump(tasks, f, indent=4)
-
-        header = Header()
-        header.stamp = self.get_clock().now().to_msg()
-        header.frame_id = 'map'
-        agents_pos_data = pc2.create_cloud_xyz32(header,start_positions)
-        self.agents_pos_publisher.publish(agents_pos_data)  # Publish the agents' positions
-
-        self.tasks = tasks
-        self.reset_planner(self.tasks)
+        # print([(p[0],p[1],p[2]) for p in self.obstacles])
+        self.task_stage = [init_pose,task_phrase_1,task_phrase_2,task_phrase_3]
+        self.reset_planner(self.task_stage[0])
+        self.task_stage = self.task_stage[1:]
         self.step_count = 0
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -185,18 +251,22 @@ class Mapf3DExecutor(rosNode):
             current_positions, done = self.planner.step()
             print(f"Step {self.step_count}: {current_positions}")
             self.save_positions_to_csv(self.step_count, current_positions)
-            self.agent_positions = []
+            agent_positions = []
             for p in current_positions.values():
                 p = self.planner2world(p)
-                self.agent_positions.append([p[0], p[1], p[2]])  # Assuming p is a tuple (x, y, z)
+                agent_positions.append([p[0], p[1], p[2]])  # Assuming p is a tuple (x, y, z)
 
             # Publish the agents' positions as a PointCloud2 message
-            agents_pc_data = pc2.create_cloud_xyz32(header, self.agent_positions)
+            agents_pc_data = pc2.create_cloud_xyz32(header, agent_positions)
             self.agents_pos_publisher.publish(agents_pc_data)  # Publish the agents' positions
 
             for n,p in current_positions.items():
                 p = self.planner2world(p)
                 set_entity_pose(n,p[0],p[1],p[2])
+        else:
+            if self.task_stage:
+                self.reset_planner(self.task_stage[0])
+                self.task_stage = self.task_stage[1:]
 
 
 def test_mapf(args=None):
