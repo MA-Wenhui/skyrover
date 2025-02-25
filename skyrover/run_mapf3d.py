@@ -6,7 +6,9 @@ print(sys.executable)
 
 import rclpy
 import argparse
+import numpy as np
 from skyrover.executor import Mapf3DExecutor
+from skyrover.pcd2grid import load_pcd, generate_3d_grid
 
 tasks = [
     {"name": "x500_0", "start": (7, -28, 3), "goal": (0, 5, 3)},
@@ -33,6 +35,13 @@ tasks = [
     {"name": "delivery_robot_15", "start": (-12, -30, 0), "goal": (-6,-17,0)},
 ]
 
+def process_pcd(pcd_file,min_bounds,max_bounds,resolution=1.0):
+    # Load and process PCD data
+    points = load_pcd(pcd_file)
+    grid = generate_3d_grid(points,np.array(min_bounds),np.array(max_bounds), resolution)
+    return grid
+
+
 def main(args=None):
 
     parser = argparse.ArgumentParser(description="Mapf3DExecutor Node")
@@ -45,7 +54,10 @@ def main(args=None):
     print(f"Custom param received: {known_args.alg}") 
 
     rclpy.init(args=unknown_args)
-    e = Mapf3DExecutor(known_args.alg,known_args.pcd,known_args.model,known_args.pub_gz)
+    min_bounds = [-21.0,-39.0,0.0]
+    max_bounds = [21.0,23.0,15.0]
+    grid = process_pcd(known_args.pcd,min_bounds,max_bounds)
+    e = Mapf3DExecutor(known_args.alg,grid,min_bounds,known_args.model,known_args.pub_gz)
     e.set_tasks(tasks)
     rclpy.spin(e)
     

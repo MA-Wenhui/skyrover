@@ -12,11 +12,8 @@ class DCCAlgorithmWrapper(AlgorithmWrapperBase):
         self.obstacles = set(obstacles)
 
         space = np.zeros(space_dim, dtype=int)
-        # print(space)
-        # print(obstacles)
         for obstacle in obstacles:
             obstacle = tuple(map(int, obstacle))  # Convert float to int
-            print(obstacle)
             space[obstacle] = 1
 
         agents_pos = np.array([agent["start"] for agent in agents], dtype=int)
