@@ -53,7 +53,7 @@ cnn_channel = 128
 hidden_dim = 256
 
 # same as DHC if set to false
-selective_comm = True
+selective_comm = False
 # only works if selective_comm set to false
 max_comm_agents = 3
 
