@@ -89,9 +89,9 @@ Run MAPF 3D
     GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/skyrover/skyrover/world/models/:$GZ_SIM_RESOURCE_PATH gz sim ~/ros2_ws/src/skyrover/skyrover/world/warehouse.sdf
 
     # choose an alg to run
-    ros2 run skyrover run_mapf3d --alg 3dcbs --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd 
-    ros2 run skyrover run_mapf3d --alg 3dastar --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd
-    ros2 run skyrover run_mapf3d --alg 3ddcc --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --model ~/ros2_ws/src/skyrover/skyrover/wrapper/dcc_3d/data/65000.pth
+    ros2 run skyrover run_mapf3d --alg 3dcbs --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --pub_gz True
+    ros2 run skyrover run_mapf3d --alg 3dastar --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --pub_gz True
+    ros2 run skyrover run_mapf3d --alg 3ddcc --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --model ~/ros2_ws/src/skyrover/skyrover/wrapper/dcc_3d/data/65000.pth --pub_gz True
 
     # run rviz to visualize /mapf_3d_pc topic
     rviz2 ~ros2_ws/src/skyrover/default.rviz 
