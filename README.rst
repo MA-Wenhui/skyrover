@@ -96,6 +96,14 @@ Run MAPF 3D
     # run rviz to visualize /mapf_3d_pc topic
     rviz2 ~/ros2_ws/src/skyrover/default.rviz 
 
+Generate PointCloud from Gazebo (Optional)
+-------------------------------
+
+One can use following gazebo plugin to generate pcd directly:
+
+- [gazebo_map_creator](https://github.com/arshadlab/gazebo_map_creator)
+
+
 
 Cite Our Work
 -------------------------------
