@@ -94,7 +94,7 @@ Run MAPF 3D
     ros2 run skyrover run_mapf3d --alg 3ddcc --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --model ~/ros2_ws/src/skyrover/skyrover/wrapper/dcc_3d/data/65000.pth --pub_gz True
 
     # run rviz to visualize /mapf_3d_pc topic
-    rviz2 ~ros2_ws/src/skyrover/default.rviz 
+    rviz2 ~/ros2_ws/src/skyrover/default.rviz 
 
 
 Cite Our Work
