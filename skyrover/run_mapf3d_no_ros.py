@@ -155,19 +155,27 @@ def main(args=None):
     parser.add_argument("--alg", type=str, default="3dcbs", help="algorithm for 3D MAPF")
     parser.add_argument("--pcd", type=str, default="map.pcd", help="point cloud file")
     parser.add_argument("--model", type=str, default="model.pth", help="model used for 3D DCC")
+    parser.add_argument("--min_bound", type=float, nargs=3, default=[-21.0, -39.0, 0.0], help="minimum bounds (x, y, z)")
+    parser.add_argument("--max_bound", type=float, nargs=3, default=[21.0, 23.0, 15.0], help="maximum bounds (x, y, z)")
+
 
     known_args, unknown_args = parser.parse_known_args()
-    # min_bounds = [-21.0, -39.0, 0.0]
-    # max_bounds = [21.0, 25.0, 15.0]
-    min_bounds = [0, 0, 0]
-    max_bounds = [123, 321, 9]
+    
+    # min_bounds = [0, 0, 0]
+    # max_bounds = [123, 321, 9]
+    min_bounds = known_args.min_bound
+    max_bounds = known_args.max_bound
+
+    print(f"Custom param received: {known_args.alg}") 
+    print(f"Min bounds: {min_bounds}, Max bounds: {max_bounds}")
+
 
     print(f"Custom param received: {known_args.alg}") 
     print(f"process_pcd...") 
     grid = process_pcd(known_args.pcd, min_bounds, max_bounds)
     print(grid)
     print(f"generate_random_tasks...") 
-    tasks = generate_random_tasks(grid,1000)  # Generate 1000 random tasks
+    tasks = generate_random_tasks(grid,10)  # Generate random tasks
 
     print(f"Init Mapf3DExecutor...") 
     executor = Mapf3DExecutor(known_args.alg, grid, min_bounds, known_args.model)

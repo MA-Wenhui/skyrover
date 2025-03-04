@@ -1,3 +1,8 @@
+#!/home/msh/miniconda3/envs/skyrover/bin/python
+import sys
+import os
+sys.path.append(os.path.expanduser('~/miniconda3/envs/skyrover/lib/python3.12/site-packages'))
+print(sys.executable)
 
 import argparse
 import numpy as np
@@ -54,31 +59,32 @@ class Mapf3DROSNode(Node):
         self.agents_pos_publisher = self.create_publisher(PointCloud2, 'mapf_3d_agents_pos', 10)
 
         # Initialize the executor
-        self.executor = Mapf3DExecutor(
+        self.mapf3dexecutor = Mapf3DExecutor(
             alg,
             grid,
             world_origin,
             model
         )
         self.pub_gz = pub_gz
-        self.executor.set_tasks(tasks)
+        self.mapf3dexecutor.set_tasks(tasks)
 
         # Timer to periodically call step
         self.timer = self.create_timer(1.0, self.timer_callback)
 
 
     def timer_callback(self):
-        agents_pos, obstacle = self.executor.step()
+        agents_pos, obstacle = self.mapf3dexecutor.step()
         header = Header()
         header.stamp = self.get_clock().now().to_msg()
         header.frame_id = 'map'
-        agents_pc_data = pc2.create_cloud_xyz32(header, agents_pos)
+        print(agents_pos)
+        agents_pc_data = pc2.create_cloud_xyz32(header, [p for p in agents_pos.values()])
         self.agents_pos_publisher.publish(agents_pc_data)
         grid_pc_data = pc2.create_cloud_xyz32(header, obstacle)
         self.grid_publisher_.publish(grid_pc_data)
         if self.pub_gz:
             for n, p in agents_pos.items():
-                p = self.executor.planner2world(p)
+                p = self.mapf3dexecutor.planner2world(p)
                 gz_srv.set_entity_pose(n, p[0], p[1], p[2], 1.0, "/world/warehouse/set_pose")
 
 def main(args=None):
@@ -87,19 +93,24 @@ def main(args=None):
     parser.add_argument("--pcd", type=str, default="map.pcd", help="point cloud file")
     parser.add_argument("--model", type=str, default="model.pth", help="model used for 3D DCC")
     parser.add_argument("--pub_gz", type=bool, default=False, help="whether to publish gz manipulation")
+    parser.add_argument("--min_bound", type=float, nargs=3, default=[-21.0, -39.0, 0.0], help="minimum bounds (x, y, z)")
+    parser.add_argument("--max_bound", type=float, nargs=3, default=[21.0, 23.0, 15.0], help="maximum bounds (x, y, z)")
 
     known_args, unknown_args = parser.parse_known_args()
-    min_bounds = [-21.0,-39.0,0.0]
-    max_bounds = [21.0,23.0,15.0]
+
+    min_bounds = known_args.min_bound
+    max_bounds = known_args.max_bound
+
     print(f"Custom param received: {known_args.alg}") 
-    grid = process_pcd(known_args.pcd,min_bounds,max_bounds)
+    print(f"Min bounds: {min_bounds}, Max bounds: {max_bounds}")
+
+    grid = process_pcd(known_args.pcd, min_bounds, max_bounds)
 
     rclpy.init(args=args)
-    node = Mapf3DROSNode(known_args.alg,grid,min_bounds,known_args.model,known_args.pub_gz)
+    node = Mapf3DROSNode(known_args.alg, grid, min_bounds, known_args.model, known_args.pub_gz)
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()

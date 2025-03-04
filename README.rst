@@ -8,6 +8,28 @@ SkyRover, a modular and extensible simulator tailored for cross-domain pathfindi
 
 Official Website: https://sites.google.com/view/mapf3d/home
 
+
+
+Changelog
+=========
+
+v1.1.0 (2025-03-04)
+-------------------
+- Add non-ROS mapf3d demo, base on python panda3d.
+- Modularize interfaces.
+- Add script to convert MovingAI *.map to *.pcd file.
+
+
+v1.0.1 (2025-02-25)
+-------------------
+- Bug fixes.
+
+
+v1.0.0 (2025-02-11)
+-------------------
+- Initial release of SkyRover.
+
+
 Environment Setup
 ================
 
@@ -25,6 +47,16 @@ Get the code
     cd ~/ros2_ws/src
     git clone https://github.com/MA-Wenhui/skyrover.git
 
+
+Install dependencies
+-------------
+
+.. code-block:: bash
+
+    conda create -n skyrover python=3.12
+    conda actiavte skyrover
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+    pip install ray tensorboard matplotlib open3d panda3d
 
 
 Install ROS2
@@ -67,16 +99,14 @@ Train 3D DCC model (or just use pretrained data)
 
 .. code-block:: bash
 
-    conda create -n skyrover python=3.12
-    conda actiavte skyrover
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-    pip install ray tensorboard matplotlib
     cd ~/ros2_ws/src/skyrover/skyrover/wrapper
     python -m dcc_3d.train_dcc_3d
 
 
 Run MAPF 3D
 -------------------------------
+
+For ROS2 users:
 
 .. code-block:: bash
     
@@ -89,12 +119,24 @@ Run MAPF 3D
     GZ_SIM_RESOURCE_PATH=~/ros2_ws/src/skyrover/skyrover/world/models/:$GZ_SIM_RESOURCE_PATH gz sim ~/ros2_ws/src/skyrover/skyrover/world/warehouse.sdf
 
     # choose an alg to run
-    ros2 run skyrover run_mapf3d --alg 3dcbs --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --pub_gz True
-    ros2 run skyrover run_mapf3d --alg 3dastar --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --pub_gz True
-    ros2 run skyrover run_mapf3d --alg 3ddcc --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --model ~/ros2_ws/src/skyrover/skyrover/wrapper/dcc_3d/data/65000.pth --pub_gz True
+    ros2 run skyrover run_mapf3d --alg 3dcbs --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --pub_gz True --min_bound -21 -39 0 --max_bound 21 23 15
+    ros2 run skyrover run_mapf3d --alg 3dastar --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --pub_gz True --min_bound -21 -39 0 --max_bound 21 23 15
+    ros2 run skyrover run_mapf3d --alg 3ddcc --pcd ~/ros2_ws/src/skyrover/skyrover/world/map/map.pcd --model ~/ros2_ws/src/skyrover/skyrover/wrapper/dcc_3d/data/65000.pth --pub_gz True --min_bound -21 -39 0 --max_bound 21 23 15
 
     # run rviz to visualize /mapf_3d_pc topic
     rviz2 ~/ros2_ws/src/skyrover/default.rviz 
+
+
+For non-ROS users:
+
+.. code-block:: bash
+    
+    conda activate skyrover
+    cd skyrover/skyrover/data
+    python map2pcd.py --map warehouse-20-40-10-2-1.map --out map_pointcloud_fine.pcd
+    cd ../..
+    python -m skyrover.run_mapf3d_no_ros --alg 3ddcc --pcd skyrover/data/map_pointcloud_fine.pcd --model skyrover/wrapper/dcc_3d/data/65000.pth --min_bound 0 0 0 --max_bound 123 321 9
+
 
 Generate PointCloud from Gazebo (Optional)
 -------------------------------
