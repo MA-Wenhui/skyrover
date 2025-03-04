@@ -2,54 +2,49 @@
 import numpy as np
 
 def load_pcd(file_path):
-    """Load point cloud from a PCD file."""
-    points = []
-    header = True
+    """Load point cloud from a PCD file using NumPy for faster processing."""
     with open(file_path, 'r') as f:
-        for line in f:
-            line = line.strip()
-            if header:
-                if line.startswith('DATA'):  # End of header section
-                    header = False
-                continue
+        lines = f.readlines()
+    
+    # 找到数据部分的起始索引
+    data_start = next(i for i, line in enumerate(lines) if line.strip().startswith('DATA')) + 1
+    
+    # 直接用 NumPy 读取数据部分
+    points = np.loadtxt(lines[data_start:], dtype=np.float32)
 
-            # Parse point data
-            if line:
-                values = line.split()
-                if len(values) >= 3:
-                    try:
-                        points.append([float(values[0]), float(values[1]), float(values[2])])
-                    except ValueError:
-                        continue
+    # 计算点云范围
+    min_bounds = points.min(axis=0)
+    max_bounds = points.max(axis=0)
+    print(f"load_pcd min_bounds:{min_bounds}")
+    print(f"load_pcd max_bounds:{max_bounds}")
 
-    return np.array(points)
+    return points
+
+
+import numpy as np
 
 def generate_3d_grid(points, min_bounds, max_bounds, grid_size):
-    # Calculate the center of the grid using integer division for safe indexing
-    center_min = tuple(int(i + grid_size // 2) for i in min_bounds)
-    center_max = tuple(int(i - grid_size // 2) for i in max_bounds)
+    # 计算网格的中心点
+    center_min = np.floor(min_bounds / grid_size).astype(int)
+    center_max = np.floor(max_bounds / grid_size).astype(int)
 
-    # Ensure grid dimensions are integers
-    grid_dimensions = (
-        int(center_max[0] - center_min[0] + 1),
-        int(center_max[1] - center_min[1] + 1),
-        int(center_max[2] - center_min[2] + 1)
-    )
+    # 计算网格的维度
+    grid_dimensions = (center_max - center_min + 1)
+    grid_dimensions = tuple(grid_dimensions.astype(int))
 
-    # Initialize a 3D grid with zeros
+    print(f"generate_3d_grid grid_dimensions: {grid_dimensions}")
+
+    # 初始化 3D 网格
     grid = np.zeros(grid_dimensions, dtype=np.uint8)
 
-    # Populate the grid based on point positions
-    for point in points:
-        x, y, z = point
-        # Calculate the grid index, ensuring it's within bounds
-        index_x = int(np.floor(x + grid_size / 2 ))- center_min[0]
-        index_y = int(np.floor(y + grid_size / 2)) - center_min[1]
-        index_z = int(np.floor(z + grid_size / 2)) - center_min[2]
+    # 计算所有点的网格索引（不做偏移）
+    indices = np.floor(points / grid_size).astype(int) - center_min
 
-        if (0 <= index_x < grid_dimensions[0] and 
-            0 <= index_y < grid_dimensions[1] and 
-            0 <= index_z < grid_dimensions[2]):
-            grid[index_x, index_y, index_z] = 1  # Mark occupied cells
+    # 过滤掉越界的点
+    valid_mask = np.all((indices >= 0) & (indices < grid_dimensions), axis=1)
+    valid_indices = indices[valid_mask]
+
+    # 将有效点的对应网格位置设为 1
+    grid[valid_indices[:, 0], valid_indices[:, 1], valid_indices[:, 2]] = 1
 
     return grid
